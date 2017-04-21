@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AuthService } from "../../providers/auth-service";
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { ShopService } from "../../providers/shoplist-service";
 
 @Component({
   selector: 'page-home',
@@ -9,44 +9,35 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 })
 export class HomePage {
 
-  songs: FirebaseListObservable<any>;
+  _isAuthenticated: boolean;
+
   constructor(public navCtrl: NavController,
     public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController,
-    private _auth: AuthService,
-    private af: AngularFire) {
-    this.loadList();
+    private _shop: ShopService,
+    private _auth: AuthService) {
+    this._isAuthenticated = false;
   }
 
-  private loadList() {
-    if (this._auth.authenticated) {
-      this.songs = this.af.database.list("/songs");
+  ngDoCheck() {
+    if (this._auth.authenticated != this._isAuthenticated) {
+      this._isAuthenticated = true;
+      this._shop.load();
     }
   }
 
-  private onSignInSuccess(): void {
-    this.loadList();
-    console.log("Google display name ",this._auth.displayName());
+  get items() {
+    return this._shop.list;
   }
 
   isAuthenticated(): boolean {
     return this._auth.authenticated;
   }
 
-  signIn(): void {
-    this._auth.signInWithGoogle()
-      .then(() => this.onSignInSuccess());
-  }
-
-  signOut(): void {
-    this.songs = null;
-    this._auth.signOut();
-  }
-
-  addSong() {
+  addItem() {
     let prompt = this.alertCtrl.create({
-      title: 'Song Name',
-      message: "Enter a name for this new song",
+      title: 'Add Shopping Item',
+      message: "Name what you need",
       inputs: [
         {
           name: "title",
@@ -63,9 +54,8 @@ export class HomePage {
         {
           text: "Save",
           handler: data => {
-            this.songs.push({
-              title: data.title
-            });
+            console.log("pushing data", data);
+            this._shop.push(data.title, 1);
           }
         }
       ]
@@ -73,21 +63,21 @@ export class HomePage {
     prompt.present();
   }
 
-  showOptions(songId: string, songTitle: string) {
+  showOptions(productId: string, item) {
     let actionSheet = this.actionSheetCtrl.create({
       title: "What do you want to do ?",
       buttons: [
         {
-          text: "Delete Song",
+          text: "Delete Item",
           role: "desctructive",
           handler: () => {
-            this.removeSong(songId);
+            this._shop.remove(productId);
           }
         },
         {
-          text: "Update title",
+          text: "Update Item",
           handler: () => {
-            this.updateSong(songId, songTitle);
+            this.update(productId, item);
           }
         }, {
           text: "Cancel",
@@ -101,20 +91,21 @@ export class HomePage {
 
     actionSheet.present();
   }
-
-  removeSong(songId: string) {
-    this.songs.remove(songId);
-  }
-
-  updateSong(songId: string, songTitle: string) {
+  
+  update(itemId: string, item) {
     let prompt = this.alertCtrl.create({
-      title: 'Song Name',
-      message: "Update Song Titles",
+      title: 'Shopping Item',
+      message: "Update Item Name and quantity",
       inputs: [
         {
           name: "title",
           placeholder: "Title",
-          value: songTitle
+          value: item.name
+        },
+        {
+          name: "quantity",
+          placeholder: "Quantity",
+          value: item.quantity
         }
       ],
       buttons: [
@@ -127,9 +118,7 @@ export class HomePage {
         {
           text: "Save",
           handler: data => {
-            this.songs.update(songId, {
-              title: data.title
-            });
+            this._shop.update(itemId, data.title, data.quantity);
           }
         }
       ]

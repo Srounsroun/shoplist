@@ -4,7 +4,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { ProfilePage } from '../pages/profile/profile';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -14,6 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 // Import the AF2 Module
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
+import { ShopService } from '../providers/shoplist-service';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyCLrIabqG8x7v9DV37khF09z3hTzZC9aFs",
@@ -28,7 +29,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
+    ProfilePage,
     HomePage,
     TabsPage
   ],
@@ -41,12 +42,13 @@ export const firebaseConfig = {
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
+    ProfilePage,
     HomePage,
     TabsPage
   ],
   providers: [
     AuthService,
+    ShopService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AuthProviders, AngularFireAuth, FirebaseAuthState, AuthMethods } from "angularfire2"
@@ -34,6 +33,22 @@ export class AuthService {
 
   signOut() : void {
     this.auth$.logout();
+  }
+
+  displayEmail(): string {
+    if(this.authState != null) {
+      return this.authState.google.email;
+    } else {
+      return "";
+    }
+  }
+
+  displayPhoto(): string {
+    if(this.authState != null) {
+      return this.authState.google.photoURL;
+    } else {
+      return "";
+    }
   }
 
   displayName(): string {

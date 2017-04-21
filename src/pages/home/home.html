@@ -1,18 +1,20 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Shopping List</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <button ion-button outline (click)="signIn()" [hidden]="isAuthenticated()">Login with Google</button>
-  <button ion-button outline (click)="signOut()" [hidden]="!isAuthenticated()">Sign Out</button>
-  <button ion-button icon-only (click)="addSong()" [hidden]="!isAuthenticated()">
-    <ion-icon name="add"></ion-icon>
-  </button>
+  <ion-fab top right edge>
+    <button ion-fab mini (click)="addItem()" [hidden]="!isAuthenticated()"><ion-icon name="add" ></ion-icon></button>
+  </ion-fab>
   <ion-list>
-    <ion-item *ngFor="let song of songs | async" (click)="showOptions(song.$key, song.title)">
-      {{ song.title }}
+    <ion-item *ngFor="let item of items | async" (click)="showOptions(item.$key, item)">
+      <ion-icon [name]='item.icon' item-left></ion-icon>
+      {{ item.name }}
+      <button ion-button outline item-right icon-left>
+        {{ item.quantity }}
+      </button>
     </ion-item>
   </ion-list>
 </ion-content>

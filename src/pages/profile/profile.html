@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Profile
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img [src]="user.photo" [hidden]="!isAuthenticated()" />
+    <ion-card-content [hidden]="!isAuthenticated()">
+      <ion-card-title>
+        {{ user.name }}
+      </ion-card-title>
+      <p>
+       {{ user.email }}
+      </p>
+    </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col text-center>
+        <button ion-button clear small color="danger" icon-left (click)="signIn()" [hidden]="isAuthenticated()">
+          <ion-icon name='google'></ion-icon>
+          Sign In with Google
+        </button>
+        <button  ion-button clear small color="danger" icon-left (click)="signOut()" [hidden]="!isAuthenticated()">
+          <ion-icon name='exit'></ion-icon>
+          Sign Out
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+</ion-content>
