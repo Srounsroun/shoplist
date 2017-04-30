@@ -57,5 +57,13 @@ export class AuthService {
     } else {
       return "";
     }
+  } 
+  
+  uid(): string {
+    if(this.authState != null) {
+      return this.authState.google.uid;
+    } else {
+      return "";
+    }
   }
 }

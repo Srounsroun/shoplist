@@ -5,17 +5,18 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
   <ion-card>
-    <img [src]="user.photo" [hidden]="!isAuthenticated()" />
     <ion-card-content [hidden]="!isAuthenticated()">
-      <ion-card-title>
-        {{ user.name }}
-      </ion-card-title>
-      <p>
-       {{ user.email }}
-      </p>
+      <ion-list>
+        <ion-item>
+          <ion-avatar item-left>
+            <img [src]="user.photo" [hidden]="!isAuthenticated()" />
+          </ion-avatar>
+          <h2> {{ user.name }}</h2>
+          <p> {{ user.email }}</p>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
 
     <ion-row no-padding>
@@ -24,7 +25,7 @@
           <ion-icon name='google'></ion-icon>
           Sign In with Google
         </button>
-        <button  ion-button clear small color="danger" icon-left (click)="signOut()" [hidden]="!isAuthenticated()">
+        <button ion-button clear small color="danger" icon-left (click)="signOut()" [hidden]="!isAuthenticated()">
           <ion-icon name='exit'></ion-icon>
           Sign Out
         </button>

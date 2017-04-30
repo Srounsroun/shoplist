@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { Geolocation } from '@ionic-native/geolocation';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
@@ -7,6 +8,7 @@ import { AboutPage } from '../pages/about/about';
 import { ProfilePage } from '../pages/profile/profile';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { MapPage } from '../pages/map/map';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -31,7 +33,8 @@ export const firebaseConfig = {
     AboutPage,
     ProfilePage,
     HomePage,
-    TabsPage
+    TabsPage,
+    MapPage
   ],
   imports: [
     BrowserModule,
@@ -44,9 +47,11 @@ export const firebaseConfig = {
     AboutPage,
     ProfilePage,
     HomePage,
-    TabsPage
+    MapPage,
+    TabsPage,
   ],
   providers: [
+    Geolocation,
     AuthService,
     ShopService,
     StatusBar,
